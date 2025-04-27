@@ -1,0 +1,51 @@
+_format_version: "3.0"
+_transform: true # Enables shorter syntax where applicable
+
+# --- Consumer Definition ---
+consumers:
+  - username: auth-service-consumer
+    custom_id: auth-service-consumer
+
+# --- JWT Secret (JWKS) Definition ---
+jwt_secrets:
+  - consumer: auth-service-consumer # Reference consumer by username or custom_id
+    algorithm: RS256               # Explicitly set the algorithm
+    key: "https://my-auth-service.com" # A UNIQUE IDENTIFIER for this credential.
+                                      # This value MUST match the 'iss' claim in your JWT.
+                                      # Or, if you keep using 'iss' for the issuer URL in your JWT,
+                                      # set key_claim_name: kid in the JWT plugin config and put
+                                      # this value in the 'kid' header of your JWT.
+    rsa_public_key: |                 # The actual public key content in PEM format
+      -----BEGIN PUBLIC KEY-----
+      ...
+      -----END PUBLIC KEY-----
+
+    secret: null
+
+# --- Service Definitions (EXAMPLE) ---
+# services:
+#   # --- Auth Service Definition ---
+#   - name: auth-service
+#     url: http://auth-service:3000 # Internal service name and port
+#     routes:
+#       - name: auth-public-routes
+#         paths:
+#           - /api/v1/auth
+#         strip_path: false
+
+#   - name: app
+#     url: http://app:3000
+#     plugins:
+#       - name: jwt
+#         config:
+#           key_claim_name: iss       # Look for the 'iss' claim in the JWT
+#           claims_to_verify:       # Verify standard claims
+#             - exp                 # Check token expiry
+#           run_on_preflight: true
+    
+#     routes:
+#       - name: app-routes
+#         paths:
+#           - /api
+#         strip_path: false
+#         # The JWT plugin applied to the service will protect this route

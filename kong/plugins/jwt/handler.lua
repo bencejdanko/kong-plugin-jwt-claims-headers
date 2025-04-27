@@ -1,3 +1,17 @@
+-- Copyright Bence Danko 2025 - Modifications made to original Kong JWT plugin
+-- Original Copyright 2016-2025 Kong Inc. (Licensed under Apache License 2.0)
+--
+-- This file is based on the official Kong JWT plugin handler.lua
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Changes made:
+--   - Added logic to inject all JWT claims as X-Jwt-Claim-* headers.
+--   - Implemented JSON array serialization for table-type claims.
+
 -- <jwt handler.lua>
 local constants = require "kong.constants"
 local jwt_decoder = require "kong.plugins.jwt.jwt_parser"
